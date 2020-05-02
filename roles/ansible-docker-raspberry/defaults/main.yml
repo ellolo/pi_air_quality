@@ -1,0 +1,9 @@
+---
+# users to add to docker group
+docker_users: [pi]
+
+# pip version to use to install docker compose
+pip_version: pip3
+
+# if to install docker compose
+install_docker_compose: True

@@ -1,0 +1,132 @@
+---
+
+# influxdb server configuration
+
+#influxdb_username: "marco"
+#influxdb_password: "marco"
+influxdb_ip_address: "http://192.168.178.75" #IP of raspberry on home network
+influxdb_port: "8086"
+system_monitor_db_name: "system_monitor"
+weather_db_name: "weather"
+dbs: [ "{{ system_monitor_db_name }}", "{{ weather_db_name }}"]
+
+telegraf_conf_dir: "/home/pi/telegraf"
+telegraf_network: "telegraf"
+telegraf_data_volume: "telegraf-volume"
+telegraf_restart_policy: "always"
+
+
+# telegraf global tags, e.g. that will be used as tags in influxdb for all
+# outputs from this device
+
+telegraf_global_tags:
+  - name: "room"
+    value: "studio"
+  - name: "device"
+    value: "pi_red"  
+
+
+# telegraf agent configuration    
+
+telegraf_agent_interval: "30s"
+telegraf_agent_round_interval: "true"
+telegraf_agent_metric_batch_size: "1000"
+telegraf_agent_metric_buffer_limit: "10000"
+telegraf_agent_collection_jitter: "0s"
+telegraf_agent_flush_interval: "30s"
+telegraf_agent_flush_jitter: "0s"
+telegraf_agent_precision: ""
+telegraf_agent_debug: "false"
+telegraf_agent_quite: "false"
+telegraf_agent_logtarget: "file"
+telegraf_agent_logfile: ""
+telegraf_agent_logfile_rotation_interval: "0d"
+telegraf_agent_logfile_rotation_max_size: "0MB"
+telegraf_agent_logfile_rotation_max_archives: "5"
+telegraf_agent_hostname: ""
+telegraf_agent_omit_hostname: "false"
+
+
+# telegraf output plugins with its config.
+# namepass, namedrop, fieldpass, fielddrop, taginclude, tagexclude should be
+# added as item in the config list
+
+telegraf_output_plugins:
+  #- plugin_name: "outputs.file"
+  #  config:
+  #    - files = ["/tmp/metrics.out"]
+  - plugin_name: "outputs.influxdb"
+    config:
+      - urls = ["{{ influxdb_ip_address }}:{{ influxdb_port }}"]
+      - database =  "{{ system_monitor_db_name }}"
+      - database_tag =  ""
+      - exclude_database_tag = false
+      - skip_database_creation = false
+      - retention_policy = ""
+      - retention_policy_tag = ""
+      - exclude_retention_policy_tag = false
+      - write_consistency = "any"
+      - timeout = "5s"
+      #- username = "{{ influxdb_username }}"
+      #- password = "{{ influxdb_password }}"
+      - user_agent = "telegraf"
+      - udp_payload = "512B"
+    #tagpass:
+    #  - influxdb_db = ["{{ cpu_db_name }}"]
+  - plugin_name: "outputs.influxdb"
+    config:
+      - urls = ["{{ influxdb_ip_address }}:{{ influxdb_port }}"]
+      - database =  "{{ system_monitor_db_name }}"
+      - database_tag =  ""
+      - exclude_database_tag = false
+      - skip_database_creation = false
+      - retention_policy = ""
+      - retention_policy_tag = ""
+      - exclude_retention_policy_tag = false
+      - write_consistency = "any"
+      - timeout = "5s"
+      #- username = "{{ influxdb_username }}"
+      #- password = "{{ influxdb_password }}"
+      - user_agent = "telegraf"
+      - udp_payload = "512B"
+    #tagpass:
+    #  - influxdb_db = ["{{ mem_db_name }}"]
+
+
+
+# telegraf inputs plugins with its config.
+# namepass, namedrop, fieldpass, fielddrop, taginclude, tagexclude should be
+# added as item in the config list
+telegraf_input_plugins:
+  - plugin_name: "inputs.cpu"
+    config:
+      - percpu = true
+      - totalcpu = true
+      - collect_cpu_time = false
+      - report_active = false
+    #tags:
+    #  - influxdb_db = "{{ cpu_db_name }}"
+  - plugin_name: "inputs.mem"
+    #tags:
+    #  - influxdb_db = "{{ mem_db_name }}"
+
+
+
+# telegraf processor plugins with their config.
+
+#telegraf_processors:
+#  - processor_name: "processors.dedup"
+#    config:
+#      - dedup_interval = "600s"
+
+        
+# telegraf aggregator plugins with their config.
+
+#telegraf_aggregators:
+#  - aggregator_name: "aggregators.basicstats"
+#    config:
+#      - period = "30s"
+#      - drop_original = "false"
+#      - stats = ["count", "min", "max", "mean". "stdev", "s2", "sum"]
+
+ 

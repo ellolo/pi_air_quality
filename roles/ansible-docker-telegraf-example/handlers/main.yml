@@ -1,0 +1,5 @@
+---
+- name: restart telegraf
+  docker_container:
+    name: telegraf 
+    restart: True

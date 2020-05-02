@@ -1,0 +1,10 @@
+---
+- name: create influxdb database for system monitoring.
+  influxdb_database:
+    hostname: "{{ influxdb_ip_address }}"
+    port: "{{ influxdb_port }}"
+    database_name: "{{ cpu_db_name }}"
+    state: present
+    username: "{{ influxdb_username }}"
+    password: "{{ influxdb_password  }}"
+

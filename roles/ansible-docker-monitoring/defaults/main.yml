@@ -1,0 +1,11 @@
+---
+influxdb_conf_dir: "/home/pi"
+monitoring_network: "monitoring"
+influxdb_data_volume: "influxdb-volume"
+influxdb_restart_policy: "always"
+influxdb_auth_enabled: "true"
+grafana_data_volume: "grafana-volume"
+grafana_admin_user: "admin"
+grafana_admin_pwd: "admin"
+grafana_reporting_enabled: "false"
+grafana_restart_policy: "always"

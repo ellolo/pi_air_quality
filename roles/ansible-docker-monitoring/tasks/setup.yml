@@ -1,0 +1,28 @@
+---
+- name: Create influxdb local configutation directory.
+  file:
+    path: "{{ influxdb_conf_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Create influxdb configuration file.
+  notify: restart influxdb
+  template:
+    src: "influxdb.conf.j2"
+    dest: "{{ influxdb_conf_dir }}/influxdb.conf"
+
+- name: Create network for influxdb and grafana container.
+  docker_network:
+    name: "{{ monitoring_network }}"
+    state: present
+    driver: bridge
+
+- name: Create volume for influxdb.
+  docker_volume:
+    name: "{{ influxdb_data_volume }}"
+    state: present
+
+- name: Create volume for grafana.
+  docker_volume:
+    name: "{{ grafana_data_volume }}"
+    state: present

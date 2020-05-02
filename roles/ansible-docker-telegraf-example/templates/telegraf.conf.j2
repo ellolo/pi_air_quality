@@ -1,0 +1,187 @@
+[global_tags]
+{% if telegraf_global_tags is defined %}
+{% for item in telegraf_global_tags %}
+  {{ item.name }} = "{{ item.value }}"
+{% endfor %}
+{% endif %}
+
+
+# Configuration for telegraf agent
+[agent]
+  ## Default data collection interval for all inputs
+  interval = "{{ telegraf_agent_interval }}"
+  ## Rounds collection interval to 'interval'
+  ## ie, if interval="10s" then always collect on :00, :10, :20, etc.
+  round_interval = {{ telegraf_agent_round_interval }}
+
+  ## Telegraf will send metrics to outputs in batches of at most
+  ## metric_batch_size metrics.
+  ## This controls the size of writes that Telegraf sends to output plugins.
+  metric_batch_size = {{ telegraf_agent_metric_batch_size }}
+
+  ## Maximum number of unwritten metrics per output.  Increasing this value
+  ## allows for longer periods of output downtime without dropping metrics at the
+  ## cost of higher maximum memory usage.
+  metric_buffer_limit = {{ telegraf_agent_metric_buffer_limit }}
+
+  ## Collection jitter is used to jitter the collection by a random amount.
+  ## Each plugin will sleep for a random time within jitter before collecting.
+  ## This can be used to avoid many plugins querying things like sysfs at the
+  ## same time, which can have a measurable effect on the system.
+  collection_jitter = "{{ telegraf_agent_collection_jitter }}"
+
+  ## Default flushing interval for all outputs. Maximum flush_interval will be
+  ## flush_interval + flush_jitter
+  flush_interval = "{{ telegraf_agent_flush_interval }}"
+  ## Jitter the flush interval by a random amount. This is primarily to avoid
+  ## large write spikes for users running a large number of telegraf instances.
+  ## ie, a jitter of 5s and interval 10s means flushes will happen every 10-15s
+  flush_jitter = "{{ telegraf_agent_flush_jitter }}"
+
+  ## By default or when set to "0s", precision will be set to the same
+  ## timestamp order as the collection interval, with the maximum being 1s.
+  ##   ie, when interval = "10s", precision will be "1s"
+  ##       when interval = "250ms", precision will be "1ms"
+  ## Precision will NOT be used for service inputs. It is up to each individual
+  ## service input to set the timestamp at the appropriate precision.
+  ## Valid time units are "ns", "us" (or "µs"), "ms", "s".
+  precision = "{{ telegraf_agent_precision }}"
+
+  ## Log at debug level.
+  debug = {{ telegraf_agent_debug }}  
+  ## Log only error level messages.
+  quiet = {{ telegraf_agent_quite }}
+
+  ## Log target controls the destination for logs and can be one of "file",
+  ## "stderr" or, on Windows, "eventlog".  When set to "file", the output file
+  ## is determined by the "logfile" setting.
+  logtarget = "{{ telegraf_agent_logtarget }}"
+
+  ## Name of the file to be logged to when using the "file" logtarget.  If set to
+  ## the empty string then logs are written to stderr.
+  logfile = "{{ telegraf_agent_logfile }}"
+
+  ## The logfile will be rotated after the time interval specified.  When set
+  ## to 0 no time based rotation is performed.  Logs are rotated only when
+  ## written to, if there is no log activity rotation may be delayed.
+  logfile_rotation_interval = "{{ telegraf_agent_logfile_rotation_interval }}"
+
+  ## The logfile will be rotated when it becomes larger than the specified
+  ## size.  When set to 0 no size based rotation is performed.
+  logfile_rotation_max_size = "{{ telegraf_agent_logfile_rotation_max_size }}"
+
+  ## Maximum number of rotated archives to keep, any older logs are deleted.
+  ## If set to -1, no archives are removed.
+  logfile_rotation_max_archives = {{ telegraf_agent_logfile_rotation_max_archives }}
+
+  ## Override default hostname, if empty use os.Hostname()
+  hostname = "{{ telegraf_agent_hostname }}"
+  ## If set to true, do no set the "host" tag in the telegraf agent.
+  omit_hostname = {{ telegraf_agent_omit_hostname }}
+
+
+###############################################################################
+#                            OUTPUT PLUGINS                                   #
+###############################################################################
+{% if telegraf_output_plugins is defined %}
+{% for item in telegraf_output_plugins %}
+[[{{ item.plugin_name }}]]
+{% if item.config is defined %}
+{% for itemm in item.config %}
+  {{ itemm }}
+{% endfor %}
+{% endif %}
+{% if item.tagpass is defined %}
+  [{{ item.plugin_name }}.tagpass]
+{% for itemm in item.tagpass %}
+    {{ itemm }}
+{% endfor %}
+{% endif %}
+{% if item.tagdrop is defined %}
+  [{{ item.plugin_name }}.tagdrop]
+{% for itemm in item.tagdrop %}
+    {{ itemm }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+
+###############################################################################
+#                            INPUT PLUGINS                                    #
+###############################################################################
+{% if telegraf_input_plugins is defined %}
+{% for item in telegraf_input_plugins %}
+[[{{ item.plugin_name }}]]
+{% if item.config is defined %}
+{% for itemm in item.config %}
+  {{ itemm }}
+{% endfor %}
+{% endif %}
+{% if item.tags is defined %}
+  [{{ item.plugin_name }}.tags]
+{% for itemm in item.tags %}
+    {{ itemm }}
+{% endfor %}
+{% endif %}
+{% if item.tagpass is defined %}
+  [{{ item.plugin_name }}.tagpass]
+{% for itemm in item.tagpass %}
+    {{ itemm }}
+{% endfor %}
+{% endif %}
+{% if item.tagdrop is defined %}
+  [{{ item.plugin_name }}.tagdrop]
+{% for itemm in item.tagdrop %}
+    {{ itemm }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+
+###############################################################################
+#                            PROCESSOR PLUGINS                                #
+###############################################################################
+
+{% if telegraf_processors is defined %}
+{% for item in telegraf_processors %}
+[[{{ item.processor_name }}]]
+{% if item.config is defined %}
+{% for itemm in item.config %}
+  {{ itemm }}
+{% endfor %}
+{% endif %}
+{% if item.tags is defined %}
+  [{{ item.processor_name }}.tags]
+{% for itemm in item.tags %}
+    {{ itemm }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+
+
+###############################################################################
+#                            AGGREGATOR PLUGINS                               #
+###############################################################################
+
+{% if telegraf_aggregators is defined %}
+{% for item in telegraf_aggregators %}
+[[{{ item.aggregator_name }}]]
+{% if item.config is defined %}
+{% for itemm in item.config %}
+  {{ itemm }}
+{% endfor %}
+{% endif %}
+{% if item.tags is defined %}
+  [{{ item.aggregator_name }}.tags]
+{% for itemm in item.tags %}
+    {{ itemm }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+

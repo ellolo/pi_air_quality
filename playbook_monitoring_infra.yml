@@ -1,0 +1,12 @@
+---
+- hosts: raspberries
+  become: yes
+  
+  vars:
+    influxdb_conf_dir: "/home/pi/influxdb-conf"
+    monitoring_network: "monitoring"
+    influxdb_data_volume: "influxdb-volume"
+    influxdb_restart_policy: "always"
+    influxdb_auth_enabled: "false"
+  roles:
+    - ansible-docker-monitoring

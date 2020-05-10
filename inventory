@@ -1,5 +1,6 @@
-[raspberries]
-localhost ansible_connection=local
+[db]
+localhost
 
-[raspberries:vars]
-ansible_python_interpreter=/usr/bin/python3
+[raspberries]
+localhost
+pi-red.fritz.box

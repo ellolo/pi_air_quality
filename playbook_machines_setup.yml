@@ -1,0 +1,21 @@
+---
+- hosts: raspberries
+  become: yes
+  vars:
+    username: ansible
+  tasks:
+  - name: ensure apt package update and upgrade.
+    apt:
+      upgrade: yes
+      update_cache: yes
+  - name: ensure vim, nmap and ntp are installed.
+    apt:
+      name:
+      - vim
+      - nmap
+      - ntp
+      state: present
+  - name: ensure aliases are set.
+    copy:
+      src: .bash_aliases
+      dest: /home/{{ username }}/.bash_aliases    

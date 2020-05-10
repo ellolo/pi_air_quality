@@ -18,7 +18,6 @@
     group: telegraf
     mode: '0750'
 
-
 - name: Create telegraf configuration file.
   notify: restart telegraf
   template:
@@ -50,7 +49,7 @@
     restart_policy: "{{ telegraf_restart_policy }}"
     networks:
       - name: "{{ telegraf_network }}"
-    purge_networks: yes    
+    purge_networks: true    
     volumes:
       - "{{ telegraf_conf_dir }}/telegraf.conf:/etc/telegraf/telegraf.conf:ro"
       - "{{ telegraf_data_volume }}:/var/lib/"

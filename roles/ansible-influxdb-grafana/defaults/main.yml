@@ -1,9 +1,10 @@
 ---
-influxdb_conf_dir: "/home/pi"
+influxdb_conf_dir: "/home/ansible/influxdb-conf"
 monitoring_network: "monitoring"
 influxdb_data_volume: "influxdb-volume"
 influxdb_restart_policy: "always"
 influxdb_auth_enabled: "false"
+influxdb_address: "influxdb"
 grafana_data_volume: "grafana-volume"
 grafana_admin_user: "admin"
 grafana_admin_pwd: "admin"

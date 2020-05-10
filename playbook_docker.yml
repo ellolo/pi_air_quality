@@ -1,11 +1,5 @@
 ---
 - hosts: raspberries
   become: yes
-  
-  vars:
-    docker_users: [pi]
-    pip_version: pip3
-    install_docker_compose: True
-  
   roles:
-    - ansible-docker-raspberry
+    - ansible-docker

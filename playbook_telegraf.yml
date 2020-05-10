@@ -1,8 +1,5 @@
 ---
 - hosts: raspberries
   become: yes
-  
-  vars:
-    telegraf_conf_dir: "/home/pi/telegraf-conf"
   roles:
-    - ansible-docker-telegraf-example
+    - ansible-telegraf

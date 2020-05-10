@@ -11,6 +11,11 @@
     src: "influxdb.conf.j2"
     dest: "{{ influxdb_conf_dir }}/influxdb.conf"
 
+
+- pip:
+    name:
+      - docker
+
 - name: Create network for influxdb and grafana container.
   docker_network:
     name: "{{ monitoring_network }}"

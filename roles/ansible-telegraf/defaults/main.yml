@@ -2,6 +2,7 @@
 influxdb_address: "http://pi-silver.fritz.box"
 influxdb_port: "8086"
 system_monitor_db_name: "system_monitor"
+weather_monitor_db_name: "weather_monitor"
 
 cpu_temperature_file: "/sys/class/thermal/thermal_zone0/temp"
 
@@ -55,8 +56,8 @@ telegraf_output_plugins:
       - timeout = "5s"
       - user_agent = "telegraf"
       - udp_payload = "512B"
-  #  tagpass:
-  #    - influxdb_db = ["{{ cpu_db_name }}"]
+    tagpass:
+      - influxdb_db = ["{{ system_monitor_db_name }}"]
   #- plugin_name: "outputs.influxdb"
   # config:
   #    - urls = ["{{ influxdb_address }}:{{ influxdb_port }}"]
@@ -85,23 +86,34 @@ telegraf_input_plugins:
       - totalcpu = true
       - collect_cpu_time = false
       - report_active = false
-    #tags:
-    #  - influxdb_db = "{{ cpu_db_name }}"
+    tags:
+      - influxdb_db = "{{ system_monitor_db_name }}"
   - plugin_name: "inputs.mem"
-    #tags:
-    #  - influxdb_db = "{{ mem_db_name }}"
+    tags:
+      - influxdb_db = "{{ system_monitor_db_name }}"
   - plugin_name: "inputs.disk"
+    tags:
+      - influxdb_db = "{{ system_monitor_db_name }}"
   - plugin_name: "inputs.diskio"
+    tags:
+      - influxdb_db = "{{ system_monitor_db_name }}"
   - plugin_name: "inputs.system"
+    tags:
+      - influxdb_db = "{{ system_monitor_db_name }}"
   - plugin_name: "inputs.net"
+    tags:
+      - influxdb_db = "{{ system_monitor_db_name }}"
   - plugin_name: "inputs.processes"
+    tags:
+      - influxdb_db = "{{ system_monitor_db_name }}" 
   - plugin_name: "inputs.file"
     config:
       - files = ["{{ cpu_temperature_file }}"]
       - name_override = "cpu_temperature"  
       - data_format = "value"
       - data_type = "integer"  
-
+    tags:
+      - influxdb_db = "{{ system_monitor_db_name }}" 
 # telegraf processor plugins with their config.
 
 #telegraf_processors:

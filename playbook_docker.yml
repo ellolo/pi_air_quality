@@ -1,5 +1,9 @@
 ---
 - hosts: raspberries
   become: yes
+  vars:
+    run_docker_registry: true
   roles:
-    - ansible-docker
+    - role: ansible-docker
+    - role: ansible-docker-registry
+      when: run_docker_registry | bool 

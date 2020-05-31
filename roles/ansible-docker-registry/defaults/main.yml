@@ -1,0 +1,9 @@
+---
+# directory on host where registry data is stored
+docker_registry_dir: "/var/lib/registry"
+
+# restart policy for registry docker container
+docker_registry_restart_policy: always
+
+# url of private docker registry
+docker_registry_url: "pi-silver.fritz.box:5000"

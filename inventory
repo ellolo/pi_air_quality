@@ -1,6 +1,9 @@
 [db]
 localhost
 
+[docker_registry]
+localhost
+
 [raspberries]
 localhost
 pi-red.fritz.box

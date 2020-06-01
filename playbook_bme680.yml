@@ -1,0 +1,70 @@
+---
+- hosts: localhost
+  vars:
+    dockerfile_dir: /home/pi/dev/sensorics/bme680-data-recorder
+  tasks:
+  - name: build bme680-data-recorder image.
+    docker_image:
+      source: build
+      force_source: yes # rebuilds when dockerfile or source code has changed
+      build:
+        path: "{{ dockerfile_dir }}"
+        pull: no
+      name: bme680-data-recorder
+      repository: pi-silver.fritz.box:5000/bme680-data-recorder
+      state: present   
+      push: yes
+      force: yes
+
+- hosts: raspberries
+  vars:
+    bme680_restart_policy: always
+    host_sensoric_data_dir: "./data_bme680"
+    humidity_oversample: "OS_2X"
+    temperature_oversample: "OS_8X"
+    pressure_oversample: "OS_4X"
+    filter_size: "FILTER_SIZE_3"
+    enable_gas_meas: "yes"
+    temp_offset: 0
+    gas_heater_temperature: 320
+    gas_heater_duration: 150
+    gas_heater_profile: 0
+    burn_in_time: 310
+    sampling_time: 3
+    humidity_baseline: 40.0
+    humidity_weight: 0.25
+    top_gas_reading_size: 50
+    log_level: "INFO"
+    log_telegraf: "yes"
+  
+  tasks:
+
+  - name: create data directory.
+    file:
+      path: "{{ host_sensoric_data_dir }}"
+      state: directory
+      mode: '0755'
+
+
+  - name: prepares configuration file for bme680.
+    notify: restart bme680-data-recorder  
+    template:
+      src: "bme680_config.yml.j2"
+      dest: "{{ host_sensoric_data_dir }}/bme680_config.yml"
+
+  - name: ensures that container in running from image bme680-data-recorder.
+    docker_container:
+      name: bme680-data-recorder
+      image: pi-silver.fritz.box:5000/bme680-data-recorder
+      state: started
+      restart_policy: "{{ bme680_restart_policy }}"
+      env:
+        BME680_CONFIG_FILE: "/data/bme680_config.yml"
+      devices:
+        - "/dev/i2c-1"
+      volumes:
+        - "{{ host_sensoric_data_dir }}:/data:rw"
+
+  handlers:
+  - name: restart bme680-data-recorder 
+    command: docker restart bme680-data-recorder  

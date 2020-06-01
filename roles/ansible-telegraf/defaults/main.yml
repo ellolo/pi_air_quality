@@ -5,6 +5,7 @@ system_monitor_db_name: "system_monitor"
 weather_monitor_db_name: "weather_monitor"
 
 cpu_temperature_file: "/sys/class/thermal/thermal_zone0/temp"
+bme680_container_name: "bme680-data-recorder"
 
 telegraf_conf_dir: "/etc/telegraf"
 telegraf_network: "telegraf"
@@ -28,7 +29,7 @@ telegraf_agent_collection_jitter: "0s"
 telegraf_agent_flush_interval: "30s"
 telegraf_agent_flush_jitter: "0s"
 telegraf_agent_precision: ""
-telegraf_agent_debug: "false"
+telegraf_agent_debug: "true"
 telegraf_agent_quite: "false"
 telegraf_agent_logtarget: "file"
 telegraf_agent_logfile: ""
@@ -58,22 +59,25 @@ telegraf_output_plugins:
       - udp_payload = "512B"
     tagpass:
       - influxdb_db = ["{{ system_monitor_db_name }}"]
-  #- plugin_name: "outputs.influxdb"
-  # config:
-  #    - urls = ["{{ influxdb_address }}:{{ influxdb_port }}"]
-  #    - database =  "{{ system_monitor_db_name }}"
-  #    - database_tag =  ""
-  #    - exclude_database_tag = false
-  #    - skip_database_creation = false
-  #    - retention_policy = ""
-  #    - retention_policy_tag = ""
-  #    - exclude_retention_policy_tag = false
-  #    - write_consistency = "any"
-  #    - timeout = "5s"
-  #    - user_agent = "telegraf"
-  #    - udp_payload = "512B"
-  #  tagpass:
-  #    - influxdb_db = ["{{ mem_db_name }}"]
+  - plugin_name: "outputs.influxdb"
+    config:
+      - urls = ["{{ influxdb_address }}:{{ influxdb_port }}"]
+      - database =  "{{ weather_monitor_db_name }}"
+      - database_tag =  ""
+      - exclude_database_tag = false
+      - skip_database_creation = false
+      - retention_policy = ""
+      - retention_policy_tag = ""
+      - exclude_retention_policy_tag = false
+      - write_consistency = "any"
+      - timeout = "5s"
+      - user_agent = "telegraf"
+      - udp_payload = "512B"
+      - tagexclude = ["container_image", "container_name", "container_version", "stream"]
+      - fielddrop = ["container_id", "message"]
+ 
+    tagpass:
+      - influxdb_db = ["{{ weather_monitor_db_name }}"]
 
 
 # telegraf inputs plugins with its config.
@@ -114,14 +118,34 @@ telegraf_input_plugins:
       - data_type = "integer"  
     tags:
       - influxdb_db = "{{ system_monitor_db_name }}" 
-# telegraf processor plugins with their config.
-
-#telegraf_processors:
-#  - processor_name: "processors.dedup"
-#    config:
-#      - dedup_interval = "600s"
+  - plugin_name: "inputs.docker_log"
+    config:
+      - container_name_include = ["{{ bme680_container_name }}"]
+    tags:
+      - influxdb_db = "{{ weather_monitor_db_name }}" 
+    # only retain logs that are written by the container of stdout.
+    tagpass:
+      - stream = ["stdout"]
 
         
+# telegraf processor plugins with their config.
+telegraf_processors:
+  - processor_name: "processors.parser"
+    config:
+      - order = 1
+      - parse_fields = ["message"]
+      - data_format = "influx"
+      - drop_original = false
+      - merge = "override"
+    # the processor is only applied to inputs with the specific tag below.
+    tagpass:
+      - influxdb_db = ["{{ weather_monitor_db_name }}"]
+  - processor_name: "processors.printer"
+    config:
+      - order = 2
+    tagpass:
+      - influxdb_db = ["{{ weather_monitor_db_name }}"]
+
 # telegraf aggregator plugins with their config.
 
 #telegraf_aggregators:

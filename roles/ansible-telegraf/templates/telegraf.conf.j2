@@ -158,6 +158,18 @@
     {{ itemm }}
 {% endfor %}
 {% endif %}
+{% if item.tagpass is defined %}
+  [{{ item.processor_name }}.tagpass]
+{% for itemm in item.tagpass %}
+    {{ itemm }}
+{% endfor %}
+{% endif %}
+{% if item.tagdrop is defined %}
+  [{{ item.processor_name }}.tagdrop]
+{% for itemm in item.tagdrop %}
+    {{ itemm }}
+{% endfor %}
+{% endif %}
 {% endfor %}
 {% endif %}
 

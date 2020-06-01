@@ -1,13 +1,20 @@
 ---
 - hosts: raspberries
   become: yes
+  
   vars:
     username: ansible
+    enable_i2c: True
+    update: False
+
   tasks:
+
   - name: ensure apt package update and upgrade.
     apt:
       upgrade: yes
       update_cache: yes
+    when: update == True   
+
   - name: ensure vim, nmap and ntp are installed.
     apt:
       name:
@@ -15,7 +22,28 @@
       - nmap
       - ntp
       state: present
+
   - name: ensure aliases are set.
     copy:
       src: .bash_aliases
       dest: /home/{{ username }}/.bash_aliases    
+   
+  - name: check i2c status.
+    shell: "raspi-config nonint get_i2c"
+    register: i2c_status
+    changed_when: False #never show as changed task in ansible
+
+  - name: print i2c status.
+    debug:
+      msg: "i2c status: {{ i2c_status.stdout }}"  
+
+  - name: enable i2c.
+    notify: reboot host
+    shell: "raspi-config nonint do_i2c 0"
+    when: (enable_i2c == True) and (i2c_status.stdout != "0")
+
+  handlers:
+ 
+  - name: reboot host
+    reboot:
+    when:  inventory_hostname != "localhost"

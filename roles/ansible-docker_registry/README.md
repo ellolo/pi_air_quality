@@ -1,38 +1,45 @@
-Role Name
+Ansible Role: Docker registry
 =========
-
-A brief description of the role goes here.
+A role to setup an insecure docker registry which will be accessed via unencrypted HTTP connection.
+The role also setups all hosts to access the created registry.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Docker must be installed and running on all hosts. Docker can be installed using the [docker_setup role](https://github.com/ellolo/ansible-docker_setup). 
+
+The inventory file must have a group called ``docker_registry``, containing the host name or IP of the host where the registry will be installed.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+- ``docker_registry_dir``: directory on the host that will host the registry where registry data will be stored.
+- ``docker_registry_restart_policy``: docker registry service restart policy.
+- ``docker_registry_url``: url for the docker registry, including port.
+
+Refer to ``defaults/main.yml`` for default values for these variables.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+```yaml
+- hosts: raspberries
+  
+  vars:
+    - docker_registry_dir: "/var/lib/registry"
+    - docker_registry_restart_policy: always 
+    - docker_registry_url: myhost.mynetwork:5000
+  roles:
+    - role: ansible-docker_setup
+    - role: ansible-docker_registry
+``` 
 
 License
 -------
 
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+MIT

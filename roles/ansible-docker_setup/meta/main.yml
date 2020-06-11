@@ -1,0 +1,10 @@
+galaxy_info:
+  author: ellolo
+  role_name: docker_setup 
+  description: Docker setup including compose. 
+  license: license (MIT)
+  min_ansible_version: 2.9
+  galaxy_tags:
+    - docker
+    - compose      
+  dependencies: []

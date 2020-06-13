@@ -6,3 +6,6 @@
 
 - name: docker_influxdb_grafana
   src: https://github.com/ellolo/ansible-docker_influxdb_grafana
+
+- name: docker_telegraf
+  src: https://github.com/ellolo/ansible-docker_telegraf

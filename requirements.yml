@@ -1,0 +1,8 @@
+- name: docker_registry
+  src: https://github.com/ellolo/ansible-docker_registry
+
+- name: docker_setup
+  src: https://github.com/ellolo/ansible-docker_setup
+
+- name: docker_influxdb_grafana
+  src: https://github.com/ellolo/ansible-docker_influxdb_grafana

@@ -1,4 +1,0 @@
----
-- include: tasks/setup.yml
-- include: tasks/influxdb.yml
-- include: tasks/grafana.yml

@@ -1,3 +1,0 @@
----
-- name: restart influxdb
-  command: docker restart influxdb-monitoring 

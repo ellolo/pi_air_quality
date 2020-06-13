@@ -1,6 +1,6 @@
 galaxy_info:
   author: ellolo
-  role_name: telegraf
+  role_name: docker_telegraf
   description: Telegraf setup. 
   license: license (MIT)
   min_ansible_version: 2.9

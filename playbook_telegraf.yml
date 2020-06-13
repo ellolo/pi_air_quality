@@ -2,4 +2,4 @@
 - hosts: raspberries
   become: yes
   roles:
-    - ansible-telegraf
+    - ansible-docker_telegraf

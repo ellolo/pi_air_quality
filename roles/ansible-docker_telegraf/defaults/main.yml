@@ -16,7 +16,7 @@ telegraf_restart_policy: "always"
 #all outputs from this device
 telegraf_global_tags:
   - name: "room"
-    value: "studio"
+    value: "{{ room }}"
   - name: "host_name"
     value: "{{ inventory_hostname }}"  
 

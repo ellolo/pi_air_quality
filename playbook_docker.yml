@@ -5,5 +5,5 @@
     run_docker_registry: true
   roles:
     - role: ansible-docker_setup
-    - role: ansible-docker-registry
+    - role: ansible-docker_registry
       when: run_docker_registry | bool 

@@ -1,6 +1,6 @@
 galaxy_info:
   author: ellolo
-  role_name: influxdb_grafana_setup 
+  role_name: docker_influxdb_grafana 
   description: Setup Influxdb and grafana services. 
   license: license (MIT)
   min_ansible_version: 2.9

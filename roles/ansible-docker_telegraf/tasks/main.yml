@@ -1,2 +1,66 @@
 ---
-- include: tasks/telegraf.yml
+- name: add group 'telegraf'.
+  group:
+    name: telegraf
+    state: present
+
+- name: Add user 'telegraf' in group 'telegraf'.
+  user:
+    name: telegraf
+    group: telegraf
+    state: present
+
+- name: Create telegraf local configutation directory.
+  file:
+    path: "{{ telegraf_conf_dir }}"
+    state: directory
+    owner: telegraf
+    group: telegraf
+    mode: '0750'
+
+- name: Create telegraf configuration file.
+  notify: restart telegraf
+  template:
+    src: "telegraf.conf.j2"
+    dest: "{{ telegraf_conf_dir }}/telegraf.conf"
+    owner: telegraf
+    group: telegraf
+    mode: '0640'
+
+- name: Create volume for telegraf.
+  docker_volume:
+    name: "{{ telegraf_data_volume }}"
+    state: present
+
+- name: Create network for telegraf container.
+  docker_network:
+    name: "{{ telegraf_network }}"
+    state: present
+    driver: bridge
+    #ipam_config:
+    #   - subnet: 172.3.27.0/24
+    #   - gateway: 172.3.27.1
+
+- name: Start telegraf container.
+  docker_container:
+    name: telegraf
+    image: telegraf
+    state: started
+    restart_policy: "{{ telegraf_restart_policy }}"
+    networks:
+      - name: "{{ telegraf_network }}"
+    purge_networks: true    
+    volumes:
+      - "{{ telegraf_conf_dir }}/telegraf.conf:/etc/telegraf/telegraf.conf:ro"
+      - "{{ telegraf_data_volume }}:/var/lib/"
+      - /etc/telegraf:/etc/telegraf:ro
+      - /:/hostfs:ro
+      - /etc:/hostfs/etc:ro
+      - /proc:/hostfs/proc:ro
+      - /sys:/hostfs/sys:ro
+      - /var/run:/var/run:ro
+    env:
+      HOST_MOUNT_PREFIX: /hostfs
+      HOST_ETC: /hostfs/etc
+      HOST_PROC: /hostfs/proc
+      HOST_SYS: /hostfs/sys

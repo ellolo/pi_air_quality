@@ -37,9 +37,6 @@
     name: "{{ telegraf_network }}"
     state: present
     driver: bridge
-    #ipam_config:
-    #   - subnet: 172.3.27.0/24
-    #   - gateway: 172.3.27.1
 
 - name: Start telegraf container.
   docker_container:

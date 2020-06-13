@@ -1,38 +1,34 @@
-Role Name
+Ansible Role: Docker setup
 =========
-
-A brief description of the role goes here.
+A simple role to run [telegraf](https://www.influxdata.com/time-series-platform/telegraf/) in a docker containers. 
+The container will be in a dedicated  Docker Bridge network, to keep the service isolated.
+The role has been tested on Rasperry Pi only, but it should work on any other Linux machine.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Docker must be installed and running on the target hosts. Docker can be installed using the [docker_setup role](https://github.com/ellolo/ansible-docker_setup). 
+InfluxDB must be installed and running on a host in order to push logs to it. InfluxDB can be installed as a docker container using the [docker_influxdb_grafan rolea](https://github.com/ellolo/ansible-docker_influxdb_grafana). 
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+- ``telegraf_conf_dir``: directory on host machine where telegraf config file will be stored.
+- ``telegraf_network``: name of Bridge network that will be created.
+- ``telegraf_data_volume``: name of data volume for Telegraf.
+- ``telegraf_restart_policy``: restart policy for Telegraf docker container.
+
+Refer to ``defaults/main.yml`` for default values for these variables.
+
+The Telegraf [configuration file](https://github.com/influxdata/telegraf/blob/master/docs/CONFIGURATION.md) is created by this role via Jinja using the template file ``template/telegraf.conf.j2``. Please refer to ``defaults/main.yml`` for an example on how to create the configuration file.
+ 
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
-
-Example Playbook
-----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+None
 
 License
 -------
 
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+MIT

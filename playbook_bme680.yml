@@ -2,16 +2,22 @@
 - hosts: localhost
 
   vars:
-    dockerfile_dir: "/home/pi/dev/sensorics/bme680-data-recorder"
+    bme_data_recorder_dir: "/home/ansible/dev/temp"
     repository: pi-silver.fritz.box:5000/bme680-data-recorder
 
   tasks:
+  
+  - name: clone bme680-data-recorder repo.
+    git:
+      repo: 'https://github.com/ellolo/bme680-data-recorder'
+      dest: "{{ bme_data_recorder_dir }}"
+
   - name: build bme680-data-recorder image.
     docker_image:
       source: build
       force_source: yes # rebuilds when dockerfile or source code has changed
       build:
-        path: "{{ dockerfile_dir }}"
+        path: "{{ bme_data_recorder_dir }}"
         pull: no
       name: bme680-data-recorder
       repository: "{{ repository }}"     

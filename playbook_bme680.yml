@@ -1,7 +1,10 @@
 ---
 - hosts: localhost
+
   vars:
-    dockerfile_dir: /home/pi/dev/sensorics/bme680-data-recorder
+    dockerfile_dir: "/home/pi/dev/sensorics/bme680-data-recorder"
+    repository: pi-silver.fritz.box:5000/bme680-data-recorder
+
   tasks:
   - name: build bme680-data-recorder image.
     docker_image:
@@ -11,13 +14,15 @@
         path: "{{ dockerfile_dir }}"
         pull: no
       name: bme680-data-recorder
-      repository: pi-silver.fritz.box:5000/bme680-data-recorder
+      repository: "{{ repository }}"     
       state: present   
       push: yes
       force: yes
 
 - hosts: raspberries
+  
   vars:
+    repository: pi-silver.fritz.box:5000/bme680-data-recorder
     bme680_restart_policy: always
     host_sensoric_data_dir: "./data_bme680"
     humidity_oversample: "OS_2X"
@@ -55,7 +60,7 @@
   - name: ensures that container in running from image bme680-data-recorder.
     docker_container:
       name: bme680-data-recorder
-      image: pi-silver.fritz.box:5000/bme680-data-recorder
+      image: "{{ repository }}"
       state: started
       restart_policy: "{{ bme680_restart_policy }}"
       env:

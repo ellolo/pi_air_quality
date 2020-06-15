@@ -8,7 +8,9 @@
 ## Usage
 
 1. Install required roles on the control node:
-```ansible-galaxy install -r requirements.yml --roles-path ./roles```
+```
+ansible-galaxy install -r requirements.yml --roles-path ./roles
+```
 
 2. Configure ``inventory`` file as needed. Note that in the provided ``inventory`` file the control node is also the managed node that runs most of the tooling (e.g. InfluxDB, Grafana).
 3. Perform basic setup of managed nodes, e.g. enabling i2c, setting up required users: ``ansible-playbook playbook_machines_setup.yml``

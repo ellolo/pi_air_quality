@@ -5,11 +5,11 @@ Weather metrics including temperature, humidity, pressure and indoor air quality
 
 Example Grafana dashboards created by this project:
 
-1. I use this dashboard as a permanent display kiosk on an Amazon Fire HD 8 to show current weather and air quality fronmdifferent rooms in my house.
+1. I use this dashboard as a permanent display kiosk on an Amazon Fire HD 8 to show current weather and air quality from different rooms in my house.
 ![](images/kiosk_dashboard.jpg)
 
 2. Detailed dashboard for current and historical weather and air quality metrics.
-![](images/weather_dashboard.jpg)
+![](images/home_weather_dashboard.jpg)
 
 3. Detailed dashboard for current and historical system metrics from my Raspberry Pis.
 ![](images/system_dashboard.jpg)
@@ -19,14 +19,14 @@ Example Grafana dashboards created by this project:
 The project includes the following software components:
 
 - **Telegraf** running on each node to collect system and weather metrics.
-- **[bme680-data-recorder]**(https://github.com/ellolo/bme680-data-recorder) running on each node to emit weather metrics from the BME680 sensor.
+- **[bme680-data-recorder](https://github.com/ellolo/bme680-data-recorder)** running on each node to emit weather metrics from the BME680 sensor.
 - **InfluxDB** and **Grafana** running on a dedicate node, to store and display the metrics collected by the Telegraf instances.
 - **Docker registry** running on a dedicated node, to serve the bme680-data-recorder image to all nodes.
 
 All the above software components run as Docker containers.
 
 The project has been tested with two Raspberry Pis (3B+ and 4B) both equipped with BME680. The Raspberry Pi 4B runs the InfluxDB, Grafana and Docker registry instances.
-The Raspberry Pi 3B+ in only used for data collection.
+The Raspberry Pi 3B+ is only used for data collection.
 
 
 
@@ -34,7 +34,7 @@ The Raspberry Pi 3B+ in only used for data collection.
 
 1. Python3 and git are installed on all machines.
 2. Ansible is installed on the control node.
-...
+3. Set hostname or static IPs for your machines.
 
 ## Usage
 
@@ -73,7 +73,7 @@ If the playbook is run with the [role default variable file](https://github.com/
 	- system metrics (Telegraf plugins: cpu, mem, disk, diskio, net, processes, file). These metrics will be collected as soon as the docker container is started.
 	- weather (i.e. indoor air quality) metrics, collected via BME680 sensor. Please refer to [bme680-data-recorder](https://github.com/ellolo/bme680-data-recorder) for details on what metrics are collected and how.  These metrics will be collected only after step 8 is completed.
 
-With the default variables, the metrics will be shipped and stored in influxDB (via Telegraf output plugin) in two separate databases, one for system metrics and one for weather metrics.
+	With the default variables, the metrics will be shipped and stored in influxDB (via Telegraf output plugin) in two separate databases, one for system metrics and one for weather metrics.
 
 	```
 	ansible-playbook playbook_telegraf.yml

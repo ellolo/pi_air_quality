@@ -5,7 +5,7 @@ Weather metrics including temperature, humidity, pressure and indoor air quality
 
 Example Grafana dashboards created by this project:
 
-Add images from Grafana!
+![](images/kiosk_dashboard.jpg)
 
 The project includes the following software components:
 
@@ -20,7 +20,6 @@ The project has been tested with two Raspberry Pis (3B+ and 4B) both equipped wi
 The Raspberry Pi 3B+ in only used for data collection.
 
 
-Remember to add json of grafana dashboards!!
 
 ## Prerequisite
 
@@ -62,14 +61,14 @@ ansible-playbook playbook_db.yml
 7. Setup and run Telegraf as docker container on all managed nodes from which metrics have to be collected. 
 If the playbook is run with the [role default variable file](https://github.com/ellolo/ansible-docker_telegraf/blob/master/defaults/main.yml), then the following metrics will be collected:
 
-- system metrics (Telegraf plugins: cpu, mem, disk, diskio, net, processes, file). These metrics will be collected as soon as the docker container is started.
-- weather (i.e. indoor air quality) metrics, collected via BME680 sensor. Please refer to [bme680-data-recorder](https://github.com/ellolo/bme680-data-recorder) for details on what metrics are collected and how.  These metrics will be collected only after step 8 is completed.
+	- system metrics (Telegraf plugins: cpu, mem, disk, diskio, net, processes, file). These metrics will be collected as soon as the docker container is started.
+	- weather (i.e. indoor air quality) metrics, collected via BME680 sensor. Please refer to [bme680-data-recorder](https://github.com/ellolo/bme680-data-recorder) for details on what metrics are collected and how.  These metrics will be collected only after step 8 is completed.
 
 With the default variables, the metrics will be shipped and stored in influxDB (via Telegraf output plugin) in two separate databases, one for system metrics and one for weather metrics.
 
-```
-ansible-playbook playbook_telegraf.yml
-```
+	```
+	ansible-playbook playbook_telegraf.yml
+	```
 
 8. Run weather metrics collection from BME680 sensor in a docker container. The playbook will clone the [bme680-data-recorder](https://github.com/ellolo/bme680-data-recorder) repository, build the corresponding Docker image, push it to the docker registry, and start containers with that image on all managed nodes equipped with BME680. On each of these node, the container will start logging weather metrics, which will be collected by the Telegraf container setup in stup 7.
 

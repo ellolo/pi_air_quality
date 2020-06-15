@@ -35,6 +35,7 @@ The Raspberry Pi 3B+ is only used for data collection.
 1. Python3 and git are installed on all machines.
 2. Ansible is installed on the control node.
 3. Set hostname or static IPs for your machines.
+4. BME680 sensor installed an all machines (see [here](https://learn.pimoroni.com/tutorial/sandyj/getting-started-with-bme680-breakout) for a tutorial)
 
 ## Usage
 

@@ -5,7 +5,16 @@ Weather metrics including temperature, humidity, pressure and indoor air quality
 
 Example Grafana dashboards created by this project:
 
+1. I use this dashboard as a permanent display kiosk on an Amazon Fire HD 8 to show current weather and air quality fronmdifferent rooms in my house.
 ![](images/kiosk_dashboard.jpg)
+
+2. Detailed dashboard for current and historical weather and air quality metrics.
+![](images/weather_dashboard.jpg)
+
+3. Detailed dashboard for current and historical system metrics from my Raspberry Pis.
+![](images/system_dashboard.jpg)
+
+## Software components
 
 The project includes the following software components:
 

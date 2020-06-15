@@ -1,11 +1,32 @@
-# Title
+# Raspberry Pi system and weather data collection
 
-Explain the overall setting and architecture, e.g. influxdb, bridge networks, etc.
+The goal of the project is to collect and display system and weather metrics from a network or Rasperry Pis nodes placed in different locations (e.g. different rooms of your house).
+Weather metrics including temperature, humidity, pressure and indoor air quality are collected via the BME680 sensor.
+
+Example Grafana dashboards created by this project:
+
+Add images from Grafana!
+
+The project includes the following software components:
+
+- **Telegraf** running on each node to collect system and weather metrics.
+- **[bme680-data-recorder]**(https://github.com/ellolo/bme680-data-recorder) running on each node to emit weather metrics from the BME680 sensor.
+- **InfluxDB** and **Grafana** running on a dedicate node, to store and display the metrics collected by the Telegraf instances.
+- **Docker registry** running on a dedicated node, to serve the bme680-data-recorder image to all nodes.
+
+All the above software components run as Docker containers.
+
+The project has been tested with two Raspberry Pis (3B+ and 4B) both equipped with BME680. The Raspberry Pi 4B runs the InfluxDB, Grafana and Docker registry instances.
+The Raspberry Pi 3B+ in only used for data collection.
+
+
+Remember to add json of grafana dashboards!!
 
 ## Prerequisite
 
 1. Python3 and git are installed on all machines.
 2. Ansible is installed on the control node.
+...
 
 ## Usage
 
@@ -56,6 +77,4 @@ ansible-playbook playbook_telegraf.yml
 ansible-playbook playbook_bme680.yml
 ```
 
-
-
-
+9. Build Grafana dashboards using the InfluxDB instance as a source. Example dahsboards are provided here: TO ADD.

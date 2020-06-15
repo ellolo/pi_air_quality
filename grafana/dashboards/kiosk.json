@@ -1,0 +1,1122 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "$$hashKey": "object:36",
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": 3,
+  "links": [],
+  "panels": [
+    {
+      "content": "<style>\n    .text{\n        padding: 45px 0;\n    }\n</style>\n<div class=\"text\">\n<center>\n<iframe scrolling=\"no\" frameborder=\"no\" clocktype=\"html5\" style=\"overflow:hidden;border:0;margin:0;padding:0;width:380px;height:80px;\"src=\"https://www.clocklink.com/html5embed.php?clock=047&timezone=CET&color=white&size=250&Title=&Message=&Target=&From=2020,1,1,0,0,0&Color=white\"></iframe>\n</center>\n</div>\n\n\n",
+      "datasource": null,
+      "gridPos": {
+        "h": 5,
+        "w": 9,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "mode": "html",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "content": "<style>\n#embedweather {\n    zoom: 0.71;\n    -moz-transform: scale(0.80);\n    -moz-transform-origin: 0 0;\n    -o-transform: scale(0.17);\n    -o-transform-origin: 0 0;\n    -webkit-transform: scale(0.85);\n    -webkit-transform-origin: 0 0;\n    width: 200px;\n</style>\n<script type=\"text/javascript\">\nvar weatherProperties = 'lat=48.157866&lon=11.519578&color=#FFFFFF&text-color=#FFFFFF&units=si';\n \n// initial load\ndocument.getElementById('embedweather').src = 'http://forecast.io/embed/?ts=' + (Date.now()) + '#' + weatherProperties;\n \n// refresh\nvar weatherRefresh = setInterval(function() { document.getElementById('embedweather').src = 'http://forecast.io/embed/?ts=' + (Date.now()) + '#' + weatherProperties; }, 1800000);\n \n</script>\n<iframe id=\"embedweather\"  src=\"#\" style=\"margin: 0; padding: 0; border: none; width:800px; position:relative; top:-50px; overflow:visible; margin-bottom: -70px; height: 500px;\"></iframe>\n\n\n",
+      "datasource": null,
+      "gridPos": {
+        "h": 5,
+        "w": 14,
+        "x": 10,
+        "y": 0
+      },
+      "id": 4,
+      "mode": "html",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "content": "<style>\n    .text{\n        padding: 45px 0;\n    }\n</style>\n<center>\n<div class=\"text\">\n<h1>Living room</h1>\n</div>\n<center>\n\n\n",
+      "datasource": null,
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 0,
+        "y": 5
+      },
+      "id": 8,
+      "mode": "html",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "InfluxDB-weather",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 5,
+        "y": 5
+      },
+      "id": 10,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [
+              {
+                "$$hashKey": "object:1025",
+                "id": 0,
+                "op": "=",
+                "text": "N/A",
+                "type": 1,
+                "value": "null"
+              }
+            ],
+            "nullValueMode": "connected",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "purple",
+                  "value": null
+                },
+                {
+                  "color": "blue",
+                  "value": 15
+                },
+                {
+                  "color": "green",
+                  "value": 18
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 25
+                },
+                {
+                  "color": "#F2495C",
+                  "value": 32
+                }
+              ]
+            },
+            "unit": "celsius"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal"
+      },
+      "pluginVersion": "6.7.3",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "1m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "weather",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "temperature"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "room",
+              "operator": "=",
+              "value": "living"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "InfluxDB-weather",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 9,
+        "y": 5
+      },
+      "id": 13,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [
+              {
+                "$$hashKey": "object:1025",
+                "id": 0,
+                "op": "=",
+                "text": "N/A",
+                "type": 1,
+                "value": "null"
+              }
+            ],
+            "nullValueMode": "connected",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 20
+                },
+                {
+                  "color": "super-light-green",
+                  "value": 30
+                },
+                {
+                  "color": "green",
+                  "value": 40
+                },
+                {
+                  "color": "super-light-green",
+                  "value": 55
+                },
+                {
+                  "color": "yellow",
+                  "value": 65
+                },
+                {
+                  "color": "#E24D42",
+                  "value": 75
+                }
+              ]
+            },
+            "unit": "humidity"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal"
+      },
+      "pluginVersion": "6.7.3",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "1m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "weather",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "humidity"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "room",
+              "operator": "=",
+              "value": "living"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "InfluxDB-weather",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 13,
+        "y": 5
+      },
+      "id": 15,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [
+              {
+                "$$hashKey": "object:1025",
+                "id": 0,
+                "op": "=",
+                "text": "N/A",
+                "type": 1,
+                "value": "null"
+              }
+            ],
+            "nullValueMode": "connected",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "orange",
+                  "value": 990
+                },
+                {
+                  "color": "yellow",
+                  "value": 1006
+                },
+                {
+                  "color": "green",
+                  "value": 1025
+                },
+                {
+                  "color": "blue",
+                  "value": 1040
+                }
+              ]
+            },
+            "unit": "pressurehpa"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal"
+      },
+      "pluginVersion": "6.7.3",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "1m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "weather",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pressure"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "room",
+              "operator": "=",
+              "value": "living"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#73BF69",
+        "rgba(237, 129, 40, 0.89)",
+        "#F2495C"
+      ],
+      "datasource": "InfluxDB-weather",
+      "decimals": null,
+      "format": "humidity",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 17,
+        "y": 5
+      },
+      "id": 14,
+      "interval": null,
+      "links": [],
+      "mappingType": 2,
+      "mappingTypes": [
+        {
+          "$$hashKey": "object:1022",
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "$$hashKey": "object:1023",
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "pluginVersion": "6.7.3",
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "$$hashKey": "object:2156",
+          "from": "0",
+          "text": "Good",
+          "to": "50"
+        },
+        {
+          "$$hashKey": "object:2158",
+          "from": "51",
+          "text": "Moderate",
+          "to": "150"
+        },
+        {
+          "$$hashKey": "object:2160",
+          "from": "151",
+          "text": "Partially unhealthy",
+          "to": "175"
+        },
+        {
+          "$$hashKey": "object:2162",
+          "from": "176",
+          "text": "Unhealthy",
+          "to": "200"
+        },
+        {
+          "$$hashKey": "object:277",
+          "from": "201",
+          "text": "Very unhealthy",
+          "to": "300"
+        },
+        {
+          "$$hashKey": "object:279",
+          "from": "301",
+          "text": "Hazardous",
+          "to": "1000"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "1m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "weather",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "air_quality"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "room",
+              "operator": "=",
+              "value": "living"
+            }
+          ]
+        }
+      ],
+      "thresholds": "150,200",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "$$hashKey": "object:1025",
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    },
+    {
+      "content": "<style>\n    .text{\n        padding: 45px 0;\n    }\n</style>\n<center>\n<div class=\"text\">\n<h1>Studio</h1>\n</div>\n<center>\n\n\n",
+      "datasource": null,
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 0,
+        "y": 9
+      },
+      "id": 16,
+      "mode": "html",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "InfluxDB-weather",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 5,
+        "y": 9
+      },
+      "id": 17,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [
+              {
+                "$$hashKey": "object:1025",
+                "id": 0,
+                "op": "=",
+                "text": "N/A",
+                "type": 1,
+                "value": "null"
+              }
+            ],
+            "nullValueMode": "connected",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "purple",
+                  "value": null
+                },
+                {
+                  "color": "blue",
+                  "value": 15
+                },
+                {
+                  "color": "green",
+                  "value": 18
+                },
+                {
+                  "color": "#EAB839",
+                  "value": 25
+                },
+                {
+                  "color": "#F2495C",
+                  "value": 32
+                }
+              ]
+            },
+            "unit": "celsius"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal"
+      },
+      "pluginVersion": "6.7.3",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "1m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "weather",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "temperature"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "room",
+              "operator": "=",
+              "value": "studio"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "InfluxDB-weather",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 9,
+        "y": 9
+      },
+      "id": 18,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [
+              {
+                "$$hashKey": "object:1025",
+                "id": 0,
+                "op": "=",
+                "text": "N/A",
+                "type": 1,
+                "value": "null"
+              }
+            ],
+            "nullValueMode": "connected",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow",
+                  "value": 20
+                },
+                {
+                  "color": "super-light-green",
+                  "value": 30
+                },
+                {
+                  "color": "green",
+                  "value": 40
+                },
+                {
+                  "color": "super-light-green",
+                  "value": 55
+                },
+                {
+                  "color": "yellow",
+                  "value": 65
+                },
+                {
+                  "color": "#E24D42",
+                  "value": 75
+                }
+              ]
+            },
+            "unit": "humidity"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal"
+      },
+      "pluginVersion": "6.7.3",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "1m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "weather",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "humidity"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "room",
+              "operator": "=",
+              "value": "studio"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "datasource": "InfluxDB-weather",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 13,
+        "y": 9
+      },
+      "id": 19,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [
+              {
+                "$$hashKey": "object:1025",
+                "id": 0,
+                "op": "=",
+                "text": "N/A",
+                "type": 1,
+                "value": "null"
+              }
+            ],
+            "nullValueMode": "connected",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "orange",
+                  "value": 990
+                },
+                {
+                  "color": "yellow",
+                  "value": 1006
+                },
+                {
+                  "color": "green",
+                  "value": 1025
+                },
+                {
+                  "color": "blue",
+                  "value": 1040
+                }
+              ]
+            },
+            "unit": "pressurehpa"
+          },
+          "overrides": [],
+          "values": false
+        },
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal"
+      },
+      "pluginVersion": "6.7.3",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "1m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "weather",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "pressure"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "room",
+              "operator": "=",
+              "value": "studio"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#73BF69",
+        "rgba(237, 129, 40, 0.89)",
+        "#F2495C"
+      ],
+      "datasource": "InfluxDB-weather",
+      "decimals": null,
+      "format": "humidity",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 17,
+        "y": 9
+      },
+      "id": 21,
+      "interval": null,
+      "links": [],
+      "mappingType": 2,
+      "mappingTypes": [
+        {
+          "$$hashKey": "object:1022",
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "$$hashKey": "object:1023",
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "pluginVersion": "6.7.3",
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "$$hashKey": "object:2156",
+          "from": "0",
+          "text": "Good",
+          "to": "50"
+        },
+        {
+          "$$hashKey": "object:2158",
+          "from": "51",
+          "text": "Moderate",
+          "to": "150"
+        },
+        {
+          "$$hashKey": "object:2160",
+          "from": "151",
+          "text": "Partially unhealthy",
+          "to": "175"
+        },
+        {
+          "$$hashKey": "object:2162",
+          "from": "176",
+          "text": "Unhealthy",
+          "to": "200"
+        },
+        {
+          "$$hashKey": "object:277",
+          "from": "201",
+          "text": "Very unhealthy",
+          "to": "300"
+        },
+        {
+          "$$hashKey": "object:279",
+          "from": "301",
+          "text": "Hazardous",
+          "to": "1000"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false,
+        "ymax": null,
+        "ymin": null
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "1m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "weather",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "air_quality"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "room",
+              "operator": "=",
+              "value": "studio"
+            }
+          ]
+        }
+      ],
+      "thresholds": "150,200",
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "$$hashKey": "object:1025",
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "current"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 22,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "kiosk",
+  "uid": "114QjyiRk",
+  "variables": {
+    "list": []
+  },
+  "version": 36
+}

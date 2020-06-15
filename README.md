@@ -8,6 +8,7 @@
 ## Usage
 
 1. Install required roles on the control node:
+
 ```
 ansible-galaxy install -r requirements.yml --roles-path ./roles
 ```
